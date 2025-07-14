@@ -451,6 +451,7 @@ ids.forEach(id => {
     if (cumple) {
       materia.classList.remove("bloqueada");
     } else {
+       materia.classList.remove("bloqueada");
       // Sincronizar referencial duplicado
 if (materia.dataset.id === "referencial-egreso-7" || materia.dataset.id === "referencial-egreso-8") {
   const ambas = document.querySelectorAll('.materia[data-id="referencial-egreso-7"], .materia[data-id="referencial-egreso-8"]');
