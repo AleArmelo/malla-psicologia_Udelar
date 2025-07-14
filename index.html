@@ -311,14 +311,24 @@
     <div class="celda"></div>
     <div class="celda"></div>
     <div class="celda"></div>
-    <div class="celda"></div>
+    <div class="celda">
+      <div class="materia bloqueada" data-id="referencial-egreso" data-creditos="10">
+  Referencial de Egreso
+  (creditos 10)
+</div>
+</div>
 
     <div class="fila-semestre">8° semestre</div>
     <div class="celda"></div>
     <div class="celda"></div>
     <div class="celda"></div>
     <div class="celda"></div>
-    <div class="celda"></div>
+    <div class="celda">
+      <div class="materia bloqueada" data-id="referencial-egreso" data-creditos="10">
+  Referencial de Egreso
+  (creditos 10)
+</div>
+</div>
   </div>
 
   <p class="creditos">Total de créditos: <span id="creditos">0</span></p>
@@ -369,6 +379,7 @@
       actualizarCreditos();
       actualizarBloqueos();
       desbloquearItinerario();
+      desbloquearReferencialEgreso();
     });
   });
 // Lógica personalizada para desbloquear Construcción de Itinerario con múltiples rutas (OR)
@@ -414,10 +425,39 @@ function desbloquearItinerario() {
     }
   }
 }
+function desbloquearReferencialEgreso() {
+  const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+
+  const rutaReferencial = [
+    "fundamentos de la psicologia",
+    "Teorias Psicologicas",
+    "Psicologia social",
+    "Entrevista Psicologica",
+    "Inicio a la formacion en Psicologia",
+    "clinica1",
+    "Art. de saberes 3: clinica y subjetividad",
+    "Art. de saberes 2: Psicologia, Genero y Derechos Humanos",
+    "Art. de saberes 1: construccion del sujeto y del objeto en Psicologia",
+    "psicologia-educacion",
+    "dispositivos-psicoterapeuticos"
+  ];
+
+  const cumple = rutaReferencial.every(id => aprobadas.includes(id));
+
+  const materia = document.querySelector('.materia[data-id="referencial-egreso"]');
+  if (materia && !materia.classList.contains("aprobada")) {
+    if (cumple) {
+      materia.classList.remove("bloqueada");
+    } else {
+      materia.classList.add("bloqueada");
+    }
+  }
+}
 
   actualizarCreditos();
   actualizarBloqueos();
 desbloquearItinerario(); 
+desbloquearReferencialEgreso();
 </script>
 </body>
 </html>
