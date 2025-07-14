@@ -311,7 +311,7 @@
     <div class="celda"></div>
     <div class="celda"></div>
     <div class="celda">
-      <div class="materia bloqueada" data-id="referencial-egreso" data-creditos="10">
+      <div class="materia bloqueada" data-id="referencial-egreso-7" data-creditos="10">
   Referencial de Egreso
   (creditos 10)
 </div>
@@ -323,9 +323,8 @@
     <div class="celda"></div>
     <div class="celda"></div>
     <div class="celda">
-      <div class="materia bloqueada" data-id="referencial-egreso" data-creditos="10">
+      <div class="materia bloqueada" "data-id="referencial-egreso-8" data-creditos="0">
   Referencial de Egreso
-  (creditos 10)
 </div>
 </div>
   </div>
@@ -443,7 +442,9 @@ function desbloquearReferencialEgreso() {
 
   const cumple = rutaReferencial.every(id => aprobadas.includes(id));
 
-  const materia = document.querySelector('.materia[data-id="referencial-egreso"]');
+const ids = ["referencial-egreso-7", "referencial-egreso-8"];
+ids.forEach(id => {
+  const materia = document.querySelector(`.materia[data-id="${id}"]`);
   if (materia && !materia.classList.contains("aprobada")) {
     if (cumple) {
       materia.classList.remove("bloqueada");
@@ -451,6 +452,8 @@ function desbloquearReferencialEgreso() {
       materia.classList.add("bloqueada");
     }
   }
+});
+
 }
 
   actualizarCreditos();
