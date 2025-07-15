@@ -425,50 +425,101 @@ function desbloquearItinerario() {
     }
   }
 }
-function desbloquearReferencialEgreso() {
-  const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+<script>
+  const materias = document.querySelectorAll('.materia');
+  const creditosSpan = document.getElementById('creditos');
 
-  const rutaReferencial = [
-    "fundamentos de la psicologia",
-    "Teorias Psicologicas",
-    "Psicologia social",
-    "Entrevista Psicologica",
-    "Inicio a la formacion en Psicologia",
-    "clinica1",
-    "Art. de saberes 3: clinica y subjetividad",
-    "Art. de saberes 2: Psicologia, Genero y Derechos Humanos",
-    "Art. de saberes 1: construccion del sujeto y del objeto en Psicologia",
-    "psicologia-educacion",
-    "dispositivos-psicoterapeuticos"
-  ];
-
-  const cumple = rutaReferencial.every(id => aprobadas.includes(id));
-
-const ids = ["referencial-egreso-7", "referencial-egreso-8"];
-ids.forEach(id => {
-  const materia = document.querySelector(`.materia[data-id="${id}"]`);
-  if (materia && !materia.classList.contains("aprobada")) {
-    if (cumple) {
-      materia.classList.remove("bloqueada");
-    } else {
-       materia.classList.remove("bloqueada");
-      // Sincronizar referencial duplicado
-if (materia.dataset.id === "referencial-egreso-7" || materia.dataset.id === "referencial-egreso-8") {
-  const ambas = document.querySelectorAll('.materia[data-id="referencial-egreso-7"], .materia[data-id="referencial-egreso-8"]');
-  ambas.forEach(m => m.classList.toggle('aprobada'));
-} else {
-  materia.classList.toggle('aprobada');
-}
+  // Restaurar progreso desde localStorage
+  const progresoGuardado = JSON.parse(localStorage.getItem('materiasAprobadas')) || [];
+  materias.forEach(m => {
+    if (progresoGuardado.includes(m.dataset.id)) {
+      m.classList.add('aprobada');
     }
+  });
+
+  function actualizarCreditos() {
+    let total = 0;
+    document.querySelectorAll('.materia.aprobada').forEach(m => {
+      total += parseInt(m.dataset.creditos);
+    });
+    creditosSpan.textContent = total;
   }
-});
 
-}
+  function actualizarBloqueos() {
+    materias.forEach(m => {
+      const previas = m.dataset.previas ? m.dataset.previas.split(',') : [];
+      const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+      const desbloqueada = previas.every(p => aprobadas.includes(p));
+      if (!desbloqueada && previas.length > 0 && !m.classList.contains('aprobada')) {
+        m.classList.add('bloqueada');
+      } else {
+        m.classList.remove('bloqueada');
+      }
+    });
+  }
 
+  function guardarProgreso() {
+    const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+    localStorage.setItem('materiasAprobadas', JSON.stringify(aprobadas));
+  }
+
+  // Desbloqueo Referencial Egreso doble
+  function desbloquearReferencialEgreso() {
+    const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+
+    const rutaReferencial = [
+      "fundamentos de la psicologia",
+      "Teorias Psicologicas",
+      "Psicologia social",
+      "Entrevista Psicologica",
+      "Inicio a la formacion en Psicologia",
+      "clinica1",
+      "Art. de saberes 3: clinica y subjetividad",
+      "Art. de saberes 2: Psicologia, Genero y Derechos Humanos",
+      "Art. de saberes 1: construccion del sujeto y del objeto en Psicologia",
+      "psicologia-educacion",
+      "dispositivos-psicoterapeuticos"
+    ];
+
+    const cumple = rutaReferencial.every(id => aprobadas.includes(id));
+
+    const ids = ["referencial-egreso-7", "referencial-egreso-8"];
+    ids.forEach(id => {
+      const materia = document.querySelector(`.materia[data-id="${id}"]`);
+      if (materia && !materia.classList.contains("aprobada")) {
+        if (cumple) {
+          materia.classList.remove("bloqueada");
+        } else {
+          materia.classList.add("bloqueada");
+        }
+      }
+    });
+  }
+
+  materias.forEach(materia => {
+    materia.addEventListener('click', () => {
+      if (materia.classList.contains('bloqueada')) return;
+
+      // 🔄 Sincronizar Referencial de Egreso duplicado
+      if (materia.dataset.id === "referencial-egreso-7" || materia.dataset.id === "referencial-egreso-8") {
+        const yaAprobada = materia.classList.contains("aprobada");
+        const ambas = document.querySelectorAll('.materia[data-id="referencial-egreso-7"], .materia[data-id="referencial-egreso-8"]');
+        ambas.forEach(m => m.classList.toggle('aprobada', !yaAprobada));
+      } else {
+        materia.classList.toggle('aprobada');
+      }
+
+      guardarProgreso();
+      actualizarCreditos();
+      actualizarBloqueos();
+      desbloquearReferencialEgreso();
+    });
+  });
+
+  // Inicialización al cargar
   actualizarCreditos();
   actualizarBloqueos();
-desbloquearItinerario(); 
-desbloquearReferencialEgreso();
+  desbloquearReferencialEgreso();
 </script>
 </body>
 </html>
