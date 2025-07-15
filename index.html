@@ -505,12 +505,7 @@ function desbloquearOptativas() {
   const cumple = requeridas.every(id => aprobadas.includes(id));
 
   const ids = ["optativa-1", "optativa-2-7", "optativa-2-8", "optativa-3"];
-  ids.forEach(id => {if (materia.dataset.id === "optativa-2-7" || materia.dataset.id === "optativa-2-8") {
-  const yaAprobada = materia.classList.contains("aprobada");
-  const ambas = document.querySelectorAll('.materia[data-id="optativa-2-7"], .materia[data-id="optativa-2-8"]');
-  ambas.forEach(m => m.classList.toggle("aprobada", !yaAprobada));
-}
-
+  ids.forEach(id => {
     const materia = document.querySelector(`.materia[data-id="${id}"]`);
     if (materia && !materia.classList.contains("aprobada")) {
       if (cumple) {
