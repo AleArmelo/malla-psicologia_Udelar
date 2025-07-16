@@ -243,9 +243,9 @@
 </div>
  </div>
     <div class="celda">
-      <div class="materia" data-id="proyectos" data-creditos="10">
- Proyectos
-  (creditos 10)
+      <div class="materia bloqueada" data-id="proyectos-5" data-creditos="10">
+  Proyectos (créditos 10)
+</div>
 </div>
 <div class="materia" data-id="practicas-integral" data-creditos="10">
  practicas integral
@@ -284,9 +284,9 @@
 </div>
 </div>
     <div class="celda">
-      <div class="materia" data-id="proyectos" data-creditos="0">
- Proyectos
-
+<div class="materia bloqueada" data-id="proyectos-6" data-creditos="0">
+  Proyectos
+</div>
 </div>
   <div class="materia" data-id="practicas-integral" data-creditos="0">
  practicas integral
@@ -326,7 +326,9 @@
 </div>
 
 <!-- Práctica y Proyecto -->
-<div class="celda"></div>
+<div class="celda">
+  <div class="materia bloqueada" data-id="proyectos-7" data-creditos="0">Proyectos</div>
+</div>
 
 <!-- Articulación de Saberes -->
 <div class="celda">
@@ -354,7 +356,11 @@
 </div>
       
 </div>
-    <div class="celda"></div>
+    <div class="celda">
+      <div class="materia bloqueada" data-id="proyectos-8" data-creditos="0">
+        Proyectos
+      </div>
+    </div>
     <div class="celda"></div>
     <div class="celda">
       <div class="materia bloqueada" data-id="referencial-egreso-8" data-creditos="0">
@@ -542,6 +548,41 @@ function desbloquearOptativas() {
   desbloquearItinerario();
   desbloquearReferencialEgreso();
   desbloquearOptativas();
+  function desbloquearProyectos() {
+  const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+
+  const requeridas = [
+    "Historia de la psicologia",
+    "Neurobiologia de la mente",
+    "fundamentos de la psicologia",
+    "Epistemologia",
+    "Herramientas para el trabajo intelectual",
+    "Art. de saberes 1: construccion del sujeto y del objeto en Psicologia",
+    "Inicio a la formacion en Psicologia",
+    "diseno-proyectos",
+    "Metodos cuatitativo" // o podrías usar el alternativo cualitativo si querés una ruta doble
+  ];
+
+  const cumple = requeridas.every(id => aprobadas.includes(id));
+
+  const ids = ["proyectos-5", "proyectos-6", "proyectos-7", "proyectos-8"];
+  ids.forEach(id => {
+    const materia = document.querySelector(`.materia[data-id="${id}"]`);
+    if (materia && !materia.classList.contains("aprobada")) {
+      if (cumple) {
+        materia.classList.remove("bloqueada");
+      } else {
+        materia.classList.add("bloqueada");
+      }
+    }
+  });
+}
+actualizarCreditos();
+actualizarBloqueos();
+desbloquearItinerario();
+desbloquearReferencialEgreso();
+desbloquearOptativas();
+desbloquearProyectos();
 </script>
 </body>
 </html>
