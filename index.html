@@ -347,6 +347,10 @@
       <div class="materia bloqueada" data-id="optativa-1-8" data-creditos="5" data-previas="fundamentos de la psicologia,Etica y deontologia,psicologia salud,Psicologia Sujeto y Aprendizaje,clinica1,Art. de saberes 3: clinica y subjetividad,herramientas-clinica,herramientas-social,Psicologia social">
   Optativa 1 semestre 8 (créditos 5) 
 </div>
+      <div class="materia bloqueada" data-id="trabajo-final" data-creditos="40" data-previas="Inicio a la formacion en Psicologia,Historia de la psicologia,Neurobiologia de la mente,fundamentos de la psicologia,Epistemologia,Herramientas para el trabajo intelectual,Art. de saberes 1: construccion del sujeto y del objeto en Psicologia,psicologia-desarrollo,procesos-cognitivos,Teorias Psicologicas,Psicologia Sujeto y Aprendizaje,Psicologia social,Entrevista Psicologica,articulacion2,Formacion Integral,Etica y deontologia,Metodos y herr. orientadas a la extension,Metodología General de la Investigación,Metodos y Tecnicas cualitativas (5),clinica1,Art. de saberes 3: clinica y subjetividad,herramientas-clinica,Metodos cuatitativo,herramientas-social,diseno-proyectos,Arti4,psicologia salud,psicopatologia-ninos,psicopatologia-adultos,neuropsicologia,clinica2,proyectos-5,practicas-integral-5,Arti5,itinerario,problematicas-sociales,psicologia-educacion,dispositivos-psicoterapeuticos,articulacion-vi,proyectos-6,practicas-integral-6,optativa-1-8,optativa-2-7,optativa-3-8,practica-graduacion-7,referencial-egreso-7,referencial-egreso-8">
+  Trabajo Final de Graduación (créditos 40)
+</div>
+
 </div>
     <div class="celda">
       <div class="materia bloqueada" data-id="optativa-2-8" data-creditos="0">
@@ -671,6 +675,21 @@ desbloquearOptativas();
 desbloquearProyectos();
 desbloquearPracticasIntegral();
   desbloquearPracticaGraduacion();
+  function desbloquearTrabajoFinal() {
+  const totalMaterias = document.querySelectorAll('.materia:not([data-id="trabajo-final"])').length;
+  const aprobadas = document.querySelectorAll('.materia.aprobada').length;
+  const trabajoFinal = document.querySelector('.materia[data-id="trabajo-final"]');
+
+  if (trabajoFinal && !trabajoFinal.classList.contains("aprobada")) {
+    if (aprobadas >= totalMaterias) {
+      trabajoFinal.classList.remove("bloqueada");
+    } else {
+      trabajoFinal.classList.add("bloqueada");
+    }
+  }
+}
+desbloquearTrabajoFinal();
+
 </script>
 </body>
 </html>
