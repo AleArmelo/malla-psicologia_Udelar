@@ -321,6 +321,9 @@
 
 <!-- Práctica y Proyecto -->
 <div class="celda">
+  <div class="materia bloqueada" data-id="practica-graduacion-7" data-creditos="20" data-previas="practicas-integral-5,fundamentos de la psicologia,Etica y deontologia,psicologia salud,Psicologia Sujeto y Aprendizaje,clinica1,Art. de saberes 3: clinica y subjetividad,herramientas-clinica,herramientas-social,Psicologia social">
+  Práctica de Graduación (créditos 20)
+</div>
   <div class="materia bloqueada" data-id="proyectos-7" data-creditos="0">Proyectos</div>
 </div>
 
@@ -351,7 +354,10 @@
       
 </div>
     <div class="celda">
-      <div class="materia bloqueada" data-id="proyectos-8" data-creditos="0">
+      <div class="materia bloqueada" data-id="practica-graduacion-8" data-creditos="0" data-previas="practicas-integral-5,fundamentos de la psicologia,Etica y deontologia,psicologia salud,Psicologia Sujeto y Aprendizaje,clinica1,Art. de saberes 3: clinica y subjetividad,herramientas-clinica,herramientas-social,Psicologia social">
+  Práctica de Graduación
+</div>
+<div class="materia bloqueada" data-id="proyectos-8" data-creditos="0">
         Proyectos
       </div>
     </div>
@@ -619,6 +625,44 @@ desbloquearReferencialEgreso();
 desbloquearOptativas();
 desbloquearProyectos();
 desbloquearPracticasIntegral();
+  function desbloquearPracticaGraduacion() {
+  const aprobadas = [...document.querySelectorAll('.materia.aprobada')].map(el => el.dataset.id);
+
+  const previas = [
+    "practicas-integral-5",
+    "fundamentos de la psicologia",
+    "Etica y deontologia",
+    "psicologia salud",
+    "Psicologia Sujeto y Aprendizaje",
+    "clinica1",
+    "Art. de saberes 3: clinica y subjetividad",
+    "herramientas-clinica",
+    "herramientas-social",
+    "Psicologia social"
+  ];
+
+  const cumple = previas.every(id => aprobadas.includes(id));
+
+  const ids = ["practica-graduacion-7", "practica-graduacion-8"];
+  ids.forEach(id => {
+    const materia = document.querySelector(`.materia[data-id="${id}"]`);
+    if (materia && !materia.classList.contains("aprobada")) {
+      if (cumple) {
+        materia.classList.remove("bloqueada");
+      } else {
+        materia.classList.add("bloqueada");
+      }
+    }
+  });
+}
+actualizarCreditos();
+actualizarBloqueos();
+desbloquearItinerario();
+desbloquearReferencialEgreso();
+desbloquearOptativas();
+desbloquearProyectos();
+desbloquearPracticasIntegral();
+  desbloquearPracticaGraduacion();
 </script>
 </body>
 </html>
